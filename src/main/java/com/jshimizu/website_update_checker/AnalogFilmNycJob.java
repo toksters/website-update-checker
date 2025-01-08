@@ -30,6 +30,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -38,12 +39,12 @@ import org.springframework.stereotype.Component;
 @EnableAsync
 @Slf4j
 @Component
-@AllArgsConstructor
 public class AnalogFilmNycJob {
 
   private static final String DELIMITER = ";;";
 
-  private static final String DESTINATION_EMAIL = "email@gmail.com";
+  @Value("${analogFilmNyc.destinationEmail}")
+  private String destinationEmail;
 
   private static final int INTERVAL_MINS = 1;
 
@@ -51,10 +52,14 @@ public class AnalogFilmNycJob {
 
   private final SendGridApiProxy sendGridApiProxy;
 
+  public AnalogFilmNycJob(SendGridApiProxy sendGridApiProxy) {
+    this.sendGridApiProxy = sendGridApiProxy;
+  }
+
   @Async
   @Scheduled(fixedDelay = INTERVAL)
   public void runJob(){
-    log.info("Running Analog Film NYC Job...");
+    log.info("Running Analog Film NYC Job... ");
 
     try {
       Map<MonthDay, List<MovieShowing>> showings = parseWebpage();
@@ -255,7 +260,7 @@ public class AnalogFilmNycJob {
 
     str.append("Source: https://analogfilmnyc.org/upcoming-screenings/");
 
-    sendGridApiProxy.sendEmail(DESTINATION_EMAIL, "New Film Showings Found", str.toString());
+    sendGridApiProxy.sendEmail(destinationEmail, "New Film Showings Found", str.toString());
   }
 
   @Getter

@@ -9,13 +9,15 @@ import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
 public class SendGridApiProxy {
 
-  private static final String SENDGRID_API_KEY = "";
+  @Value("${sendgrid.apiKey}")
+  private String sendgridApiKey;
 
   public void sendEmail(String toEmail, String subject, String emailContent) {
     Email from = new Email("toksters@gmail.com");
@@ -23,7 +25,7 @@ public class SendGridApiProxy {
     Content content = new Content("text/html", emailContent);
     Mail mail = new Mail(from, subject, to, content);
 
-    SendGrid sg = new SendGrid(SENDGRID_API_KEY);
+    SendGrid sg = new SendGrid(sendgridApiKey);
     Request request = new Request();
     try {
       request.setMethod(Method.POST);

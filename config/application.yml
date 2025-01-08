@@ -1,0 +1,4 @@
+sendgrid:
+  apiKey: "api-key-here"
+analogFilmNyc:
+  destinationEmail: "email@gmail.com"

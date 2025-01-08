@@ -14,7 +14,7 @@ java {
 }
 
 apply plugin: 'application'
-mainClassName = "com.jshimizu.diet_coupons.WebsiteUpdateCheckerApplication"
+mainClassName = "com.jshimizu.website_update_checker.WebsiteUpdateCheckerApplication"
 
 repositories {
 	mavenCentral()
