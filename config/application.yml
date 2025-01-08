@@ -2,3 +2,4 @@ sendgrid:
   apiKey: "api-key-here"
 analogFilmNyc:
   destinationEmail: "email@gmail.com"
+  keywords: The Good the Bad and the Ugly,The Thing,Lord of the Rings,Big Lebowski,Shaun of the Dead,Hot Fuzz,Worlds End,Raiders of the Lost Ark,Almost Famous,Boogie Nights,Prestige,Princess Bride,That Thing You Do,Seven,Se7en,Inception,Men in Black,Shawshank Redemption,Big Fish,Oceans Eleven,Oceans 11,Children of Men,Butch Cassidy and the Sundance Kid,Butch Cassidy,the Sundance Kid,O Brother,Where Art Thou,O Brother Where Art Thou,True Grit,Arrival,28 Days Later,In Bruges,Licorice Pizza,Mrs. Doubtfire,Oppenheimer,Skyfall,Social Network,UHF,Stand By Me,The Lighthouse,Sicario,Punch-Drunk Love,Punch Drunk Love,The Truman Show,Raising Arizona,Tombstone,Alien,City of God,The Master,Planes Trains and Automobiles,Prisoners,There was A Father

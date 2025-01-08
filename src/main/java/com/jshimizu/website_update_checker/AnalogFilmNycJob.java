@@ -19,6 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -45,6 +47,9 @@ public class AnalogFilmNycJob {
 
   @Value("${analogFilmNyc.destinationEmail}")
   private String destinationEmail;
+
+  @Value("${analogFilmNyc.keywords}")
+  private String[] keywords;
 
   private static final int INTERVAL_MINS = 1;
 
@@ -82,11 +87,16 @@ public class AnalogFilmNycJob {
         }
       }
 
-      if (diffs.isEmpty()) {
+      // filter out diffs without keywords:
+      Map<MonthDay, List<MovieShowing>> filteredDiffs = diffs.keySet().stream()
+          .filter(k -> !diffs.get(k).stream().filter(this::doesShowingContainKeywords).toList().isEmpty())
+          .collect(Collectors.toMap(k -> k, (k) -> diffs.get(k).stream().filter(this::doesShowingContainKeywords).toList()));
+
+      if (filteredDiffs.isEmpty()) {
         log.info("Movie showings are the same from last parsing!");
       } else {
         log.info("Detected diffs! Sending email");
-        sendEmail(diffs);
+        sendEmail(filteredDiffs);
       }
 
     } catch (IOException e) {
@@ -151,6 +161,15 @@ public class AnalogFilmNycJob {
       }
     }
     return showings;
+  }
+
+  private boolean doesShowingContainKeywords(MovieShowing showing) {
+    for (String keyword : keywords) {
+      if (showing.getTitle().toLowerCase().replaceAll("[^\\w\s]", "").contains(keyword.toLowerCase())) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private MonthDay parseDate(Element elem) {
