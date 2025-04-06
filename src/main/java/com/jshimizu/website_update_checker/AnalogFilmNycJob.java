@@ -128,7 +128,8 @@ public class AnalogFilmNycJob {
       while(!dataNode.hasClass("wp-block-heading")) {
         List<MovieShowing> movieShowings = new ArrayList<>();
 
-        Elements timeElems = dataNode.getElementsByTag("strong");
+        Elements timeElems = new Elements(dataNode.getElementsByTag("strong").stream()
+            .filter((s) -> s.text() != null && s.text().contains(":")).toList());
         int textNodeInd = 0;
         for (Element timeElem : timeElems) {
           if (timeElem.text().matches("\\(\\d{2,}mm\\)") || timeElem.text().matches("\\(Digital\\)")) {
